@@ -17,12 +17,9 @@ struct LoginView: View {
     @State private var emailID: String = ""
     @State private var password: String = ""
     @State private var createAccount: Bool = false
-    
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
-    
     @State private var isLoading: Bool = false
-    
     // MARK: UserDefaults
     @AppStorage("log_status") var logStatus: Bool = false
     @AppStorage("user_profile_url") var profileURL: URL?
@@ -154,10 +151,8 @@ struct RegisterView: View {
     @State private var userBio: String = ""
     @State private var userBioLink: String = ""
     @State private var userProfilePicData: Data?
-    
     @State private var showImagePicker: Bool = false
     @State private var photoItem: PhotosPickerItem?
-    
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
     
@@ -168,7 +163,6 @@ struct RegisterView: View {
     @AppStorage("user_UID") var userUID: String = ""
     
     @Environment(\.dismiss) private var dismiss
-    
     @State private var isLoading: Bool = false
     
     var body: some View {
@@ -376,8 +370,10 @@ struct RegisterView: View {
                 
                 /*
                  Hakob
+                 Sam
                  
                  hakob@hakob.com
+                 sam@sam.com
                  
                  Qq1234567890
                  
@@ -403,6 +399,7 @@ struct RegisterView: View {
             } catch {
                 // Deleting Created Acount in case of Failure
                 // Потому что это приведет к удалению уже существующего пользователя, добавленного по ошибке. //20.30...
+//                try await Auth.auth().currentUser?.delete()
                 await setError(error)
             }
         }
@@ -418,18 +415,15 @@ struct RegisterView: View {
     }
 }
 
-//MARK: - UI design Helper function
 extension View {
     func hAlign(_ alignment: Alignment) -> some View {
         self.frame(maxWidth: .infinity, alignment: alignment)
     }
-    
     func vAlign(_ alignment: Alignment) -> some View {
         self.frame(maxHeight: .infinity, alignment: alignment)
     }
 }
 
-//MARK: - UI design Custom Border And FillView
 extension View {
     func border(_ width: CGFloat, _ color: Color) -> some View {
         self
@@ -440,7 +434,6 @@ extension View {
                     .stroke(color, lineWidth: width)
             }
     }
-    
     func fillView(_ color: Color) -> some View {
         self
             .padding(.horizontal, 15)
@@ -452,14 +445,12 @@ extension View {
     }
 }
 
-//MARK: - Disabling with Opacity
 extension View {
     func disablingWithOpacity(_ condition: Bool) -> some View {
         self.disabled(condition).opacity(condition ? 0.6 : 1)
     }
 }
 
-//MARK: - Closing All Active Keyboards
 extension View {
     func closeKeyBoard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
