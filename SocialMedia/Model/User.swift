@@ -20,7 +20,7 @@ struct User: Codable, Identifiable {
     var userBioLink: String
     var userUID: String
     var userEmail: String
-//    var userProfileURL: URL
+//    var userProfileURL: URL // this only work storage in firebase, now dont, its optional
     var userProfileURL: URL?
     
     enum CodingKeys: CodingKey {
