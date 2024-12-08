@@ -45,6 +45,41 @@ struct ReusableProfileContent: View {
                     }
                 }
                 .hAlign(.leading)
+                
+                //2
+                /*
+                 HStack(spacing: 12) {
+                     AsyncImage(url: URL(string: url)) { image in
+                //                        Image("NullProfile")
+                //                            .resizable()
+                         image
+                             .resizable()
+                     } placeholder: {
+                         
+                     }
+                     .scaledToFill()
+                     .frame(width: 100, height: 100)
+                     .clipShape(Circle())
+                     
+                     VStack(alignment: .leading, spacing: 6) {
+                         Text(user.username)
+                             .font(.title3)
+                             .fontWeight(.semibold)
+                         Text(user.userBio)
+                             .font(.caption)
+                             .foregroundColor(.secondary)
+                             .lineLimit(3)
+                         
+                         if let bioLink = URL(string: user.userBioLink) {
+                             Link(user.userBioLink, destination: bioLink)
+                                 .font(.callout)
+                                 .tint(.blue)
+                                 .lineLimit(1)
+                         }
+                     }
+                 }
+                 .hAlign(.leading)
+                 */
             
                 Text("Post's")
                     .font(.title2)
@@ -69,65 +104,3 @@ struct ReusableProfileContent: View {
         )
     )
 }
-
-//ex photo 1. web and 2. apple asyncimage
-/*
-     //This only image load , not work
-     WebImage(url: URL(string: url)) { image in
-         Image("NullProfile")
-             .resizable()
-//                        image
-//                            .image?.resizable()
-     }
-     .scaledToFill()
-     .frame(width: 100, height: 100)
-     .clipShape(Circle())
-     
-     AsyncImage(url: URL(string: url)) { image in
-         Image("NullProfile")
-             .resizable()
-//                        image
-//                            .resizable()
-     } placeholder: {
-         
-     }
-     .scaledToFill()
-     .frame(width: 100, height: 100)
-     .clipShape(Circle())
-     
- */
-
-//2
-/*
- HStack(spacing: 12) {
-     AsyncImage(url: URL(string: url)) { image in
-//                        Image("NullProfile")
-//                            .resizable()
-         image
-             .resizable()
-     } placeholder: {
-         
-     }
-     .scaledToFill()
-     .frame(width: 100, height: 100)
-     .clipShape(Circle())
-     
-     VStack(alignment: .leading, spacing: 6) {
-         Text(user.username)
-             .font(.title3)
-             .fontWeight(.semibold)
-         Text(user.userBio)
-             .font(.caption)
-             .foregroundColor(.secondary)
-             .lineLimit(3)
-         
-         if let bioLink = URL(string: user.userBioLink) {
-             Link(user.userBioLink, destination: bioLink)
-                 .font(.callout)
-                 .tint(.blue)
-                 .lineLimit(1)
-         }
-     }
- }
- .hAlign(.leading)
- */
