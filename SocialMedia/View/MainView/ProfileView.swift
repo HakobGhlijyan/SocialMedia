@@ -26,7 +26,6 @@ struct ProfileView: View {
                 if let myProfile {
                     ReusableProfileContent(user: myProfile)
                         .refreshable {
-                            //first my ptofile for nil , orther refrech
                             self.myProfile = nil
                             await fetchUserProfile()
                         }
