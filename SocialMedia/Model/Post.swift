@@ -23,7 +23,7 @@ struct Post: Identifiable, Codable {
     // MARK: Basic User Info
     var userName: String
     var userUID: String
-    var userProfileURL: URL // for enable storage
+    var userProfileURL: URL
     
     enum CodingKeys: CodingKey {
         case id

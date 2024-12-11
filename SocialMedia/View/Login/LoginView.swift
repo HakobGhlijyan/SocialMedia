@@ -112,20 +112,14 @@ struct LoginView: View {
     //MARK: If User if Found then Fetching User Data From Firestore
     func fetchUser() async throws {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        let user = try await Firestore.firestore().collection("Users").document(userID).getDocument(as: User.self)
+        let user = try await Firestore.firestore().collection("SocialMedia_Users").document(userID).getDocument(as: User.self)
         
         await MainActor.run {
             userUID = userID
             userNameStored = user.username
-            /*
-             Only Storage enable
-             profileURL = user.userProfileURL
-             */
             profileURL = user.userProfileURL
             logStatus = true
         }
-        
-        
     }
     
     func setError(_ error: Error) async {
@@ -140,7 +134,7 @@ struct LoginView: View {
         Task {
             do {
                 try await Auth.auth().sendPasswordReset(withEmail: emailID)
-                print("Password Reset Sent")
+                print("Password Reset , LINK Sent Email")
             } catch {
                 await setError(error)
             }

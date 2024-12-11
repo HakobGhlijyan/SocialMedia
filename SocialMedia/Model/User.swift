@@ -9,17 +9,15 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
-import FirebaseStorage
-import FirebaseDatabase
 
-struct User: Codable, Identifiable {
+struct User: Identifiable, Codable {
     @DocumentID var id: String?
     var username: String
     var userBio: String
     var userBioLink: String
     var userUID: String
     var userEmail: String
-    var userProfileURL: URL // this only work storage in firebase, now dont, its optional
+    var userProfileURL: URL
     
     enum CodingKeys: CodingKey {
         case id

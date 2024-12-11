@@ -151,7 +151,7 @@ struct CreateNewPost: View {
                 // Step: 1 - Uploading Image If any
                 // Used to delete the Post(Later shown in the Video)
                 let imageReferenceID = "\(userUID)\(Date())"
-                let storageRef = Storage.storage().reference().child("Post_Images").child(imageReferenceID)
+                let storageRef = Storage.storage().reference().child("SocialMedia_Post_Images").child(imageReferenceID)
                 if let postImageData {
                     print("Post and Image Uploaded started")
                     let _ = try await storageRef.putDataAsync(postImageData)
@@ -193,7 +193,7 @@ struct CreateNewPost: View {
     func createDocumentAtFirebase(_ post: Post) async throws {
         // Writing Document to Firebase Firestore
         // Запись документа в Firebase Firestore
-        let _ = try Firestore.firestore().collection("Posts").addDocument(from: post, completion: { error in
+        let _ = try Firestore.firestore().collection("SocialMedia_Posts").addDocument(from: post, completion: { error in
             if error == nil {
                 // Post Successfully Stored at Firebase
                 // Сообщение успешно сохранено в Firebase

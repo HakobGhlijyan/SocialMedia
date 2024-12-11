@@ -20,6 +20,7 @@ struct RegisterView: View {
     @State private var userBio: String = ""
     @State private var userBioLink: String = ""
     @State private var userProfilePicData: Data?
+    
     @State private var showImagePicker: Bool = false
     @State private var photoItem: PhotosPickerItem?
     
@@ -51,7 +52,7 @@ struct RegisterView: View {
                 }
                 HelperView()
             }
-                        
+            
             HStack {
                 Text("Already have an account?")
                     .foregroundStyle(.gray)
@@ -80,13 +81,13 @@ struct RegisterView: View {
                             userProfilePicData = imageData
                         }
                     } catch {
-                    //
+                        //code
                     }
                 }
             }
         }
         .alert(errorMessage, isPresented: $showError) {
-            //
+            //code
         }
     }
     
@@ -132,7 +133,7 @@ struct RegisterView: View {
                 .frame(minHeight: 100, alignment: .top)
                 .textContentType(.emailAddress)
                 .border(1, .gray.opacity(0.5))
-                        
+            
             TextField("Bio Link", text: $userBioLink)
                 .textContentType(.emailAddress)
                 .border(1, .gray.opacity(0.5))
@@ -148,102 +149,63 @@ struct RegisterView: View {
                     .fillView(.black)
             }
             .padding(.top, 10)
-            .disablingWithOpacity(isEmptyNoPic())
+            .disablingWithOpacity(isEmpty())
         }
     }
     
     private func isEmpty() -> Bool {
         userName == "" || userBio == "" || emailID == "" || password == "" || userProfilePicData == nil
     }
-    private func isEmptyNoPic() -> Bool {
-        userName == "" || userBio == "" || emailID == "" || password == ""
-    }
     
-     func registerUser() {
-         isLoading = true
-         closeKeyBoard()
-         Task {
-             do {
-                 // Step 1: Creating Firebase Account
-                 try await Auth.auth().createUser(withEmail: emailID, password: password)
-                 
-                 //Step 2: Uploading Profile Photo Into Firebase Storage
-                 guard let userUID = Auth.auth().currentUser?.uid else { return }
-                 /*
-                  Enable only Storage , not work
-                  guard let imageData = userProfilePicData else { return }
-                  */
-                 guard let imageData = userProfilePicData else { return }
-                 
-                 //Enable only Storage , not work
-                 /*
-                  //Step 2.1: Storage for image
-                  let storageRef = Storage.storage().reference().child("Profile_Images").child(userUID)
-                  let _ = try await storageRef.putDataAsync(imageData)
-                  
-                  //Step 3: downloading Photo URL
-                  let downloadURL = try await storageRef.downloadURL()
-                  */
-                 let storageRef = Storage.storage().reference().child("Profile_Images").child(userUID)
-                 let _ = try await storageRef.putDataAsync(imageData)
-                 
-                 let downloadURL = try await storageRef.downloadURL()
+    func registerUser() {
+        isLoading = true
+        closeKeyBoard()
+        Task {
+            do {
+                // Step 1: Creating Firebase Account
+                try await Auth.auth().createUser(withEmail: emailID, password: password)
                 
-                 //Step 4: Creating a User Firebase Objects - Add Image
-                 /*
-                  let user = User(
-                      username: userName,
-                      userBio: userBio,
-                      userBioLink: userBioLink,
-                      userUID: userUID,
-                      userEmail: emailID,
-                      userProfileURL: downloadURL
-                  )
-                  
-                 //Step 4: Creating a User Firebase Objects - NO Add Image
-                 
-                  let user = User(
-                      username: userName,
-                      userBio: userBio,
-                      userBioLink: userBioLink,
-                      userUID: userUID,
-                      userEmail: emailID
-                  )
-                  */
-                                
-                 let user = User(
-                     username: userName,
-                     userBio: userBio,
-                     userBioLink: userBioLink,
-                     userUID: userUID,
-                     userEmail: emailID,
-                     userProfileURL: downloadURL
-                 )
-                 
-                 //Step 5: Saving User Doc into Firestore Database
-                 let _ = try Firestore
-                     .firestore()
-                     .collection("Users")
-                     .document(userUID)
-                     .setData(from: user) { error in
-                         if error == nil {
+                //Step 2: Uploading Profile Photo Into Firebase Storage
+                guard let userUID = Auth.auth().currentUser?.uid else { return }
+                guard let imageData = userProfilePicData else { return }
+                
+                //Step 2.1: Storage for image
+                let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
+                let _ = try await storageRef.putDataAsync(imageData)
+                
+                //Step 3: downloading Photo URL
+                let downloadURL = try await storageRef.downloadURL()
+                
+                //Step 4: Creating a User Firebase Objects - Add Image
+                let user = User(
+                    username: userName,
+                    userBio: userBio,
+                    userBioLink: userBioLink,
+                    userUID: userUID,
+                    userEmail: emailID,
+                    userProfileURL: downloadURL
+                )
+                
+                //Step 5: Saving User Doc into Firestore Database
+                let _ = try Firestore
+                    .firestore()
+                    .collection("SocialMedia_Users")
+                    .document(userUID)
+                    .setData(from: user) { error in
+                        if error == nil {
                             print("Saved Successfully")
                             userNameStored = userName
                             self.userUID = userUID
-                             profileURL = downloadURL
-                            //Enable only Storage , not work
-                            /*
-                             profileURL = downloadURL
-                            */
+                            profileURL = downloadURL
                             logStatus = true
-                         }
-                     }
-                 
-             } catch {
-                 await setError(error)
-             }
-         }
-     }
+                        }
+                    }
+                
+            } catch {
+                await setError(error)
+            }
+        }
+    }
     
     func setError(_ error: Error) async {
         await MainActor.run {
@@ -263,12 +225,17 @@ struct RegisterView: View {
  Hakob
  Sam
  
- hakob@hakob.com
- sam@sam.com
+ hakob@ghlijyan.com
+ sam@ghlijyan.com
  
  Qq1234567890
  
  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
  
  https://github.com/HakobGhlijyan
+ 
+ 
+ SocialMedia_
+ 
+ 
  */

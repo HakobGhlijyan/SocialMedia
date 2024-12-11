@@ -10,17 +10,17 @@ import SDWebImageSwiftUI
 
 struct ReusableProfileContent: View {
     let user: User
-    let url: String = "https://picsum.photos/id/237/200/300"
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
                 //1
                 HStack(spacing: 12) {
-                    WebImage(url: user.userProfileURL) { image in //URL(string: url)
+                    WebImage(url: user.userProfileURL) { image in
+                        image
+                    } placeholder: {
                         Image("NullProfile")
                             .resizable()
-//                        image.image?.resizable()
                     }
                     .resizable()
                     .scaledToFill()
