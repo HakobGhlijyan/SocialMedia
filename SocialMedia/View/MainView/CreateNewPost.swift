@@ -10,6 +10,7 @@ import PhotosUI
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseFirestoreCombineSwift
 import FirebaseStorage
 import FirebaseDatabase
 
@@ -152,14 +153,15 @@ struct CreateNewPost: View {
                 let imageReferenceID = "\(userUID)\(Date())"
                 let storageRef = Storage.storage().reference().child("Post_Images").child(imageReferenceID)
                 if let postImageData {
+                    print("Post and Image Uploaded started")
                     let _ = try await storageRef.putDataAsync(postImageData)
-                    //let downloadURL = try await storageRef.downloadURL()
+                    let downloadURL = try await storageRef.downloadURL()
                     
                     // Step 3: Create Post Object With Image Id And URL
                     // Создайте Объект Публикации С Идентификатором Изображения И URL-Адресом
                     let post = Post(
                         text: postText,
-                        //imageURL: downloadURL,
+                        imageURL: downloadURL,
                         imageReferenceID: imageReferenceID,
                         userName: userName,
                         userUID: userUID,
@@ -168,6 +170,7 @@ struct CreateNewPost: View {
                     try await createDocumentAtFirebase(post)
                     print("Post and Image Uploaded")
                 } else {
+                    print("Post start")
                     // Step 2: - Directly Post Text Data to Firebase (Since there is no Images Present)
                     // Непосредственно отправляйте текстовые данные в Firebase (поскольку там нет изображений)
                     let post = Post(
@@ -201,7 +204,6 @@ struct CreateNewPost: View {
                 print("Error Save Post document")
                 print(error?.localizedDescription as Any)
             }
-            
         })
     }
     
@@ -218,22 +220,3 @@ struct CreateNewPost: View {
         
     }
 }
-
-/*
- 
-
-let url: String = "https://picsum.photos/id/237/200/300"
- 
- 
- AsyncImage(url: URL(string: url)) { image in
-//                        Image("NullProfile")
-//                            .resizable()
-     image
-         .resizable()
- } placeholder: {
-     
- }
- .scaledToFill()
- .frame(width: 100, height: 100)
- .clipShape(Circle())
- */

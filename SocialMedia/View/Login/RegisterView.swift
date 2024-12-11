@@ -173,6 +173,7 @@ struct RegisterView: View {
                   Enable only Storage , not work
                   guard let imageData = userProfilePicData else { return }
                   */
+                 guard let imageData = userProfilePicData else { return }
                  
                  //Enable only Storage , not work
                  /*
@@ -183,6 +184,10 @@ struct RegisterView: View {
                   //Step 3: downloading Photo URL
                   let downloadURL = try await storageRef.downloadURL()
                   */
+                 let storageRef = Storage.storage().reference().child("Profile_Images").child(userUID)
+                 let _ = try await storageRef.putDataAsync(imageData)
+                 
+                 let downloadURL = try await storageRef.downloadURL()
                 
                  //Step 4: Creating a User Firebase Objects - Add Image
                  /*
@@ -194,16 +199,27 @@ struct RegisterView: View {
                       userEmail: emailID,
                       userProfileURL: downloadURL
                   )
-                  */
+                  
                  //Step 4: Creating a User Firebase Objects - NO Add Image
+                 
+                  let user = User(
+                      username: userName,
+                      userBio: userBio,
+                      userBioLink: userBioLink,
+                      userUID: userUID,
+                      userEmail: emailID
+                  )
+                  */
+                                
                  let user = User(
                      username: userName,
                      userBio: userBio,
                      userBioLink: userBioLink,
                      userUID: userUID,
-                     userEmail: emailID
+                     userEmail: emailID,
+                     userProfileURL: downloadURL
                  )
-                                
+                 
                  //Step 5: Saving User Doc into Firestore Database
                  let _ = try Firestore
                      .firestore()
@@ -214,6 +230,7 @@ struct RegisterView: View {
                             print("Saved Successfully")
                             userNameStored = userName
                             self.userUID = userUID
+                             profileURL = downloadURL
                             //Enable only Storage , not work
                             /*
                              profileURL = downloadURL

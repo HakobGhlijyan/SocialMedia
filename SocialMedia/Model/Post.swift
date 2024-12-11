@@ -12,7 +12,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseDatabase
 
-struct Post: Codable, Identifiable {
+struct Post: Identifiable, Codable {
     @DocumentID var id: String?
     var text: String
     var imageURL: URL?
@@ -23,7 +23,7 @@ struct Post: Codable, Identifiable {
     // MARK: Basic User Info
     var userName: String
     var userUID: String
-    var userProfileURL: URL
+    var userProfileURL: URL // for enable storage
     
     enum CodingKeys: CodingKey {
         case id

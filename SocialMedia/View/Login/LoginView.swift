@@ -121,6 +121,7 @@ struct LoginView: View {
              Only Storage enable
              profileURL = user.userProfileURL
              */
+            profileURL = user.userProfileURL
             logStatus = true
         }
         

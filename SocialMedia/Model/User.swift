@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PhotosUI
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
@@ -20,8 +19,7 @@ struct User: Codable, Identifiable {
     var userBioLink: String
     var userUID: String
     var userEmail: String
-//    var userProfileURL: URL // this only work storage in firebase, now dont, its optional
-    var userProfileURL: URL?
+    var userProfileURL: URL // this only work storage in firebase, now dont, its optional
     
     enum CodingKeys: CodingKey {
         case id
