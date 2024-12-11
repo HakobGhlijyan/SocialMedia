@@ -10,17 +10,17 @@ import SDWebImageSwiftUI
 
 struct ReusableProfileContent: View {
     let user: User
-    let url: String = "https://picsum.photos/id/237/200/300"
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
                 //1
                 HStack(spacing: 12) {
-                    WebImage(url: URL(string: url)) { image in
-//                        Image("NullProfile")
-//                            .resizable()
-                        image.image?.resizable()
+                    WebImage(url: user.userProfileURL) { image in
+                        image
+                    } placeholder: {
+                        Image("NullProfile")
+                            .resizable()
                     }
                     .resizable()
                     .scaledToFill()
@@ -91,16 +91,4 @@ struct ReusableProfileContent: View {
             .padding(15)
         }
     }
-}
-
-#Preview {
-    ReusableProfileContent(
-        user: User(
-            username: "Hakob",
-            userBio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            userBioLink: "https://github.com/HakobGhlijyan",
-            userUID: "007",
-            userEmail: "hakob@hakob.com"
-        )
-    )
 }

@@ -6,22 +6,18 @@
 //
 
 import SwiftUI
-import PhotosUI
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
-import FirebaseStorage
-import FirebaseDatabase
 
-struct User: Codable, Identifiable {
+struct User: Identifiable, Codable {
     @DocumentID var id: String?
     var username: String
     var userBio: String
     var userBioLink: String
     var userUID: String
     var userEmail: String
-//    var userProfileURL: URL
-    var userProfileURL: URL?
+    var userProfileURL: URL
     
     enum CodingKeys: CodingKey {
         case id

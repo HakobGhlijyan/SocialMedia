@@ -78,12 +78,10 @@ struct ProfileView: View {
             do {
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
                 //1: Delete profile Image , but no work
-                /*
-                 let storageRef = Storage.storage().reference().child("Profile_Images").child(userUID)
-                 try await storageRef.delete()
-                 */
+                let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
+                try await storageRef.delete()
                 //2: Delete Firebase user documents
-                try await Firestore.firestore().collection("Users").document(userUID).delete()
+                try await Firestore.firestore().collection("SocialMedia_Users").document(userUID).delete()
                 //Final - delete auth and setting for log status to false
                 try await Auth.auth().currentUser?.delete()
                 logStatus = false
@@ -103,7 +101,7 @@ struct ProfileView: View {
     
     func fetchUserProfile() async {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
-        guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else { return }
+        guard let user = try? await Firestore.firestore().collection("SocialMedia_Users").document(userUID).getDocument(as: User.self) else { return }
         await MainActor.run {
             myProfile = user
         }
