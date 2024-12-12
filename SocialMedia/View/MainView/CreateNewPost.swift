@@ -193,12 +193,15 @@ struct CreateNewPost: View {
     func createDocumentAtFirebase(_ post: Post) async throws {
         // Writing Document to Firebase Firestore
         // Запись документа в Firebase Firestore
-        let _ = try Firestore.firestore().collection("SocialMedia_Posts").addDocument(from: post, completion: { error in
+        let doc = Firestore.firestore().collection("SocialMedia_Posts").document()
+        let _ = try doc.setData(from: post, completion: { error in
             if error == nil {
                 // Post Successfully Stored at Firebase
                 // Сообщение успешно сохранено в Firebase
                 isLoading = false
-                onPost(post)
+                var updatedPost = post
+                updatedPost.id = doc.documentID
+                onPost(updatedPost)
                 dismiss()
             } else {
                 print("Error Save Post document")

@@ -12,7 +12,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseDatabase
 
-struct Post: Identifiable, Codable {
+struct Post: Identifiable, Codable, Equatable, Hashable {
     @DocumentID var id: String?
     var text: String
     var imageURL: URL?

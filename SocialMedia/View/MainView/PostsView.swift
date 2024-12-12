@@ -9,33 +9,36 @@ import SwiftUI
 
 struct PostsView: View {
     @State private var createdNewPost: Bool = false
+    @State private var recentPost: [Post] = []
     
     var body: some View {
-        Text("Posts View")
-            .hAlign(.center).vAlign(.center)
-            .overlay(alignment: .bottomTrailing) {
-                Button {
-                    createdNewPost.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .padding(15)
-                        .background(.black, in: .circle)
+        NavigationStack {
+            ReusablePostView(posts: $recentPost)
+                .hAlign(.center).vAlign(.center)
+                .overlay(alignment: .bottomTrailing) {
+                    Button {
+                        createdNewPost.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .padding(15)
+                            .background(.black, in: .circle)
+                    }
+                    .padding(15)
                 }
-                .padding(15)
+                .navigationTitle("Post's")
+        }
+        .fullScreenCover(isPresented: $createdNewPost) {
+            CreateNewPost { post in
+                //Add created post in top
+                recentPost.insert(post, at: 0)
             }
-            .fullScreenCover(isPresented: $createdNewPost) {
-                CreateNewPost { post in
-                    
-                }
-            }
+        }
     }
 }
 
 #Preview {
     PostsView()
 }
-
-//Start Module 04
