@@ -15,13 +15,13 @@ import FirebaseDatabase
 
 struct ReusablePostView: View {
     @Binding var posts: [Post]
-    @State private var isFetching: Bool = true                  //For first is see progress view ->
+    @State private var isFetching: Bool = true
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
                 if isFetching {
-                    ProgressView()                               // this , after task isfetching in fetchPost func false
+                    ProgressView()
                         .padding(.top, 30)
                 } else {
                     if posts.isEmpty {
@@ -57,7 +57,7 @@ struct ReusablePostView: View {
         ForEach(posts) { post in
             PostCardView(post: post) { updatedPost in
                 //updating post
-                //1: - esli index raven v post pervomu elementu po id kotoriy raven id updated post . to ->
+                //1:
                 if let index = posts.firstIndex(where: { $0.id == updatedPost.id }) {
                     //2: - >
                     posts[index].likedIDs = updatedPost.likedIDs
@@ -66,7 +66,7 @@ struct ReusablePostView: View {
             } onDelete: {
                 //removing post
                 withAnimation(.bouncy(duration: 0.25)) {
-                    posts.removeAll(where: { post.id == $0.id }) // Udalenie post po id
+                    posts.removeAll(where: { post.id == $0.id })
                 }
             }
             Divider()

@@ -123,8 +123,8 @@ struct PostCardView: View {
             // Применяем средство создания моментальных снимков только тогда, когда запись доступна на экране
             // После удаления прослушивателя (это сохраняет нежелательные обновления в реальном времени из записей, которые были удалены с экрана)
             if let docListener {
-                docListener.remove()   // Udalyayu listener
-                self.docListener = nil // i delayu nil , chtob potom v onAppaer on if docListener == nil  uslovie srabotalo i snova zarabotal
+                docListener.remove()
+                self.docListener = nil
             }
         }
     }
@@ -199,7 +199,6 @@ struct PostCardView: View {
         Task {
             //Step 1: delete Image firebase id present
             do {
-                //post id reference image , esli u posta net imahge
                 if post.imageReferenceID != "" {
                     try await Storage.storage().reference().child("SocialMedia_Post_Images")
                         .child(post.imageReferenceID).delete()
