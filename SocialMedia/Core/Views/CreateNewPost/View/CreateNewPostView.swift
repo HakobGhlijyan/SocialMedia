@@ -14,13 +14,11 @@ import FirebaseFirestoreCombineSwift
 import FirebaseStorage
 import FirebaseDatabase
 
-struct CreateNewPost: View {
+struct CreateNewPostView: View {
+    let appStorage = AppStorageConstants.shared
     var onPost: (Post) -> ()
     @State private var postText: String = ""
     @State private var postImageData: Data?
-    @AppStorage("user_profile_url") private var profileURL: URL?
-    @AppStorage("user_name") private var userName: String = ""
-    @AppStorage("user_UID") private var userUID: String = ""
     @Environment(\.dismiss) private var dismiss
     @State private var isLoading: Bool = false
     @State private var errorMessage: String = ""
@@ -137,9 +135,9 @@ struct CreateNewPost: View {
         showKeyboard = false
         Task {
             do {
-                guard let profileURL = profileURL else { return }
+                guard let profileURL = appStorage.profileURL else { return }
 
-                let imageReferenceID = "\(userUID)\(Date())"
+                let imageReferenceID = "\(appStorage.userUID)\(Date())"
                 let storageRef = Storage.storage().reference().child("SocialMedia_Post_Images").child(imageReferenceID)
                 if let postImageData {
                     print("Post and Image Uploaded started")
@@ -150,8 +148,8 @@ struct CreateNewPost: View {
                         text: postText,
                         imageURL: downloadURL,
                         imageReferenceID: imageReferenceID,
-                        userName: userName,
-                        userUID: userUID,
+                        userName: appStorage.userNameStored,
+                        userUID: appStorage.userUID,
                         userProfileURL: profileURL
                     )
                     try await createDocumentAtFirebase(post)
@@ -160,8 +158,8 @@ struct CreateNewPost: View {
                     print("Post start")
                     let post = Post(
                         text: postText,
-                        userName: userName,
-                        userUID: userUID,
+                        userName: appStorage.userNameStored,
+                        userUID: appStorage.userUID,
                         userProfileURL: profileURL
                     )
                     try await createDocumentAtFirebase(post)
@@ -200,7 +198,7 @@ struct CreateNewPost: View {
 }
 
 #Preview {
-    CreateNewPost { _ in
+    CreateNewPostView { _ in
         
     }
 }

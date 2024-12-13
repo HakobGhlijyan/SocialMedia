@@ -14,6 +14,7 @@ import FirebaseStorage
 import FirebaseDatabase
 
 struct ReusablePostView: View {
+    @StateObject private var vm: PostsViewModel = PostsViewModel()
     @Binding var posts: [Post]
     @State private var isFetching: Bool = true
     @State private var paginationDoc: QueryDocumentSnapshot?

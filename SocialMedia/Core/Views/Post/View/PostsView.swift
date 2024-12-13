@@ -42,7 +42,7 @@ struct PostsView: View {
                 .navigationTitle("Post's")
         }
         .fullScreenCover(isPresented: $createdNewPost) {
-            CreateNewPost { post in
+            CreateNewPostView { post in
                 recentPost.insert(post, at: 0)
             }
         }

@@ -15,10 +15,10 @@ import FirebaseStorage
 import FirebaseDatabase
 
 struct PostCardView: View {
+    let appStorage = AppStorageConstants.shared
     var post: Post
     var onUpdate: (Post) -> ()
     var onDelete: () -> ()
-    @AppStorage("user_UID") var userUID: String = ""
     @State private var docListener: ListenerRegistration?
     
     var body: some View {
@@ -71,7 +71,7 @@ struct PostCardView: View {
         }
         .hAlign(.leading)
         .overlay(alignment: .topTrailing, content: {
-            if post.userUID == userUID {
+            if post.userUID == appStorage.userUID {
                 Menu {
                     Button("Delete Post", role: .destructive) {
                         deletePost()
@@ -122,7 +122,7 @@ struct PostCardView: View {
             Button {
                 likePost()
             } label: {
-                Image(systemName: post.likedIDs.contains(userUID) ? "hand.thumbsup.fill" : "hand.thumbsup")
+                Image(systemName: post.likedIDs.contains(appStorage.userUID) ? "hand.thumbsup.fill" : "hand.thumbsup")
             }
             Text("\(post.likedIDs.count)")
                 .font(.caption)
@@ -131,7 +131,7 @@ struct PostCardView: View {
             Button {
                 dislikePost()
             } label: {
-                Image(systemName: post.dislikedIDs.contains(userUID) ? "hand.thumbsdown.fill" : "hand.thumbsdown")
+                Image(systemName: post.dislikedIDs.contains(appStorage.userUID) ? "hand.thumbsdown.fill" : "hand.thumbsdown")
             }.padding(.leading, 25)
             Text("\(post.dislikedIDs.count)")
                 .font(.caption)
@@ -144,14 +144,14 @@ struct PostCardView: View {
     private func likePost() {
         Task {
             guard let postID = post.id else { return }
-            if post.likedIDs.contains(userUID) {
+            if post.likedIDs.contains(appStorage.userUID) {
                 try await Firestore.firestore().collection("SocialMedia_Posts")
                     .document(postID)
-                    .updateData(["likedIDs": FieldValue.arrayRemove([userUID])])
+                    .updateData(["likedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             } else {
                 try await Firestore.firestore().collection("SocialMedia_Posts")
                     .document(postID)
-                    .updateData(["likedIDs": FieldValue.arrayUnion([userUID]), "dislikedIDs": FieldValue.arrayRemove([userUID])])
+                    .updateData(["likedIDs": FieldValue.arrayUnion([appStorage.userUID]), "dislikedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             }
         }
     }
@@ -159,14 +159,14 @@ struct PostCardView: View {
     private func dislikePost() {
         Task {
             guard let postID = post.id else { return }
-            if post.dislikedIDs.contains(userUID) {
+            if post.dislikedIDs.contains(appStorage.userUID) {
                 try await Firestore.firestore().collection("SocialMedia_Posts")
                     .document(postID)
-                    .updateData(["dislikedIDs": FieldValue.arrayRemove([userUID])])
+                    .updateData(["dislikedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             } else {
                 try await Firestore.firestore().collection("SocialMedia_Posts")
                     .document(postID)
-                    .updateData(["likedIDs": FieldValue.arrayRemove([userUID]), "dislikedIDs": FieldValue.arrayUnion([userUID])])
+                    .updateData(["likedIDs": FieldValue.arrayRemove([appStorage.userUID]), "dislikedIDs": FieldValue.arrayUnion([appStorage.userUID])])
             }
         }
     }
