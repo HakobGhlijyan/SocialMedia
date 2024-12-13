@@ -16,6 +16,7 @@ import FirebaseDatabase
 struct ReusablePostView: View {
     @Binding var posts: [Post]
     @State private var isFetching: Bool = true
+    @State private var paginationDoc: QueryDocumentSnapshot?
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
