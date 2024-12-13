@@ -16,11 +16,7 @@ import FirebaseDatabase
 struct SocialMediaApp: App {
     init() {
         FirebaseApp.configure()
-        print("FireBase Configure Now")
-        print("FireBase Configure Now")
-        print("FireBase Configure Now")
-        print("FireBase Configure Now")
-        print("FireBase Configure Now")
+        print("FireBase Configure")
     }
     var body: some Scene {
         WindowGroup {
