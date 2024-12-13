@@ -19,7 +19,7 @@ struct MainView: View {
                     Label("Profile", systemImage: "gear")
                 }
         }
-        .tint(.black)
+        .tint(.primary)
     }
 }
 
