@@ -39,7 +39,7 @@ struct PostsView: View {
                         }
                     }
                 }
-                .navigationTitle("Post's")
+                .navigationTitle("All Post's")
         }
         .fullScreenCover(isPresented: $createdNewPost) {
             CreateNewPostView { post in
