@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var vm: LoginViewModel = LoginViewModel()
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 10.0) {
@@ -72,16 +73,17 @@ extension LoginView {
             }
             .font(.callout)
             .fontWeight(.medium)
-            .tint(.black)
+            .tint(.primary)
             .hAlign(.trailing)
             
             Button {
                 vm.loginUser()
             } label: {
                 Text("Sign In")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(colorScheme == .light ? .white : .black)
+                    .fontWeight(.semibold)
                     .hAlign(.center)
-                    .fillView(.black)
+                    .fillView(.primary)
             }
             .padding(.top, 10)
         }
@@ -96,7 +98,7 @@ extension LoginView {
                 vm.createAccount.toggle()
             }
             .bold()
-            .foregroundStyle(.black)
+            .foregroundStyle(.primary)
         }
         .font(.callout)
         .vAlign(.bottom)

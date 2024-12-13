@@ -10,6 +10,7 @@ import SwiftUI
 struct PostsView: View {
     @State private var createdNewPost: Bool = false
     @State private var recentPost: [Post] = []
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         NavigationStack {
@@ -22,9 +23,9 @@ struct PostsView: View {
                         Image(systemName: "plus")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(colorScheme == .dark ? .black : .white)
                             .padding(15)
-                            .background(.black, in: .circle)
+                            .background(colorScheme == .dark ? .white : .black, in: .circle)
                     }
                     .padding(15)
                 }
@@ -34,7 +35,7 @@ struct PostsView: View {
                             SearchUserView()
                         } label: {
                             Image(systemName: "magnifyingglass")
-                                .tint(.black)
+                                .tint(.primary)
                                 .scaleEffect(0.9)
                         }
                     }

@@ -35,19 +35,19 @@ struct CreateNewPostView: View {
                 } label: {
                     Text("Cancel")
                         .font(.callout)
-                        .foregroundStyle(.black)
                 }
                 .hAlign(.leading)
+                .foregroundStyle(.primary)
                 
                 Button {
                     createPost()
                 } label: {
                     Text("Post")
                         .font(.callout)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.primary)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 6)
-                        .background(.black, in: Capsule())
+                        .background(.gray, in: Capsule())
                 }
                 .disablingWithOpacity(postText == "")
                 
@@ -105,7 +105,7 @@ struct CreateNewPostView: View {
                     showKeyboard = false
                 }
             }
-            .foregroundStyle(.black)
+            .foregroundStyle(.primary)
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             

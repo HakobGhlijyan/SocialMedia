@@ -80,7 +80,7 @@ struct PostCardView: View {
                     Image(systemName: "ellipsis")
                         .font(.caption)
                         .rotationEffect(.degrees(-90))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.primary)
                         .padding(8)
                         .contentShape(Rectangle())
                 }
@@ -126,7 +126,7 @@ struct PostCardView: View {
             }
             Text("\(post.likedIDs.count)")
                 .font(.caption)
-                .foregroundStyle(.gray)
+                .foregroundStyle(.primary)
             
             Button {
                 dislikePost()
@@ -135,9 +135,9 @@ struct PostCardView: View {
             }.padding(.leading, 25)
             Text("\(post.dislikedIDs.count)")
                 .font(.caption)
-                .foregroundStyle(.gray)
+                .foregroundStyle(.primary)
         }
-        .foregroundStyle(.black)
+        .foregroundStyle(.primary)
         .padding(.vertical, 8)
     }
     

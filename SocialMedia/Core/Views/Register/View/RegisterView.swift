@@ -11,6 +11,7 @@ import PhotosUI
 struct RegisterView: View {
     @StateObject private var vm: RegisterViewModel = RegisterViewModel()
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 10.0) {
@@ -128,9 +129,9 @@ extension RegisterView {
             vm.registerUser()
         } label: {
             Text("Sign up")
-                .foregroundStyle(.white)
+                .foregroundStyle(colorScheme == .light ? .white : .black)
                 .hAlign(.center)
-                .fillView(.black)
+                .fillView(.primary)
         }
         .padding(.top, 10)
         .disablingWithOpacity(vm.isEmpty())
@@ -145,7 +146,7 @@ extension RegisterView {
                 dismiss()
             }
             .bold()
-            .foregroundStyle(.black)
+            .foregroundStyle(.primary)
         }
         .font(.callout)
         .vAlign(.bottom)
