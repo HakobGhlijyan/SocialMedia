@@ -88,12 +88,12 @@ struct ReusablePostView: View {
             var query: Query
             
             if let paginationDoc {
-                query = Firestore.firestore().collection("SocialMedia_Posts")
+                query = FirestoreConstants.postRef
                     .order(by: "publishedDate", descending: true)
                     .start(afterDocument: paginationDoc)
                     .limit(to: 20)
             } else {
-                query = Firestore.firestore().collection("SocialMedia_Posts")
+                query = FirestoreConstants.postRef
                     .order(by: "publishedDate", descending: true)
                     .limit(to: 20)
             }

@@ -138,7 +138,7 @@ struct CreateNewPostView: View {
                 guard let profileURL = appStorage.profileURL else { return }
 
                 let imageReferenceID = "\(appStorage.userUID)\(Date())"
-                let storageRef = Storage.storage().reference().child("SocialMedia_Post_Images").child(imageReferenceID)
+                let storageRef = FirestoreConstants.postImagesRef.child(imageReferenceID)
                 if let postImageData {
                     print("Post and Image Uploaded started")
                     let _ = try await storageRef.putDataAsync(postImageData)
@@ -174,7 +174,7 @@ struct CreateNewPostView: View {
     }
 
     func createDocumentAtFirebase(_ post: Post) async throws {
-        let doc = Firestore.firestore().collection("SocialMedia_Posts").document()
+        let doc = FirestoreConstants.postRef.document()
         let _ = try doc.setData(from: post, completion: { error in
             if error == nil {
                 isLoading = false

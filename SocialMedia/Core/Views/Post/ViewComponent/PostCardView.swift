@@ -91,9 +91,7 @@ struct PostCardView: View {
         .onAppear {
             if docListener == nil {
                 guard let postID = post.id else { return }
-                docListener = Firestore
-                    .firestore()
-                    .collection("SocialMedia_Posts")
+                docListener = FirestoreConstants.postRef
                     .document(postID)
                     .addSnapshotListener({ snapshot, error in
                         if let snapshot {
@@ -145,11 +143,11 @@ struct PostCardView: View {
         Task {
             guard let postID = post.id else { return }
             if post.likedIDs.contains(appStorage.userUID) {
-                try await Firestore.firestore().collection("SocialMedia_Posts")
+                try await FirestoreConstants.postRef
                     .document(postID)
                     .updateData(["likedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             } else {
-                try await Firestore.firestore().collection("SocialMedia_Posts")
+                try await FirestoreConstants.postRef
                     .document(postID)
                     .updateData(["likedIDs": FieldValue.arrayUnion([appStorage.userUID]), "dislikedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             }
@@ -160,11 +158,11 @@ struct PostCardView: View {
         Task {
             guard let postID = post.id else { return }
             if post.dislikedIDs.contains(appStorage.userUID) {
-                try await Firestore.firestore().collection("SocialMedia_Posts")
+                try await FirestoreConstants.postRef
                     .document(postID)
                     .updateData(["dislikedIDs": FieldValue.arrayRemove([appStorage.userUID])])
             } else {
-                try await Firestore.firestore().collection("SocialMedia_Posts")
+                try await FirestoreConstants.postRef
                     .document(postID)
                     .updateData(["likedIDs": FieldValue.arrayRemove([appStorage.userUID]), "dislikedIDs": FieldValue.arrayUnion([appStorage.userUID])])
             }
@@ -175,11 +173,11 @@ struct PostCardView: View {
         Task {
             do {
                 if post.imageReferenceID != "" {
-                    try await Storage.storage().reference().child("SocialMedia_Post_Images")
+                    try await FirestoreConstants.postImagesRef
                         .child(post.imageReferenceID).delete()
                 }
                 guard let postID = post.id else { return }
-                try await Firestore.firestore().collection("SocialMedia_Posts")
+                try await FirestoreConstants.postRef
                     .document(postID).delete()
             } catch {
                 print(error.localizedDescription)

@@ -18,7 +18,7 @@ final class SearchUserViewModel: ObservableObject {
     
     func searchUsers() async {
         do {
-            let documents = try await Firestore.firestore().collection("SocialMedia_Users")
+            let documents = try await FirestoreConstants.userRef
                 .whereField("username", isGreaterThanOrEqualTo: searchText)
                 .whereField("username", isLessThanOrEqualTo: "\(searchText)\u{f8ff}")
                 .getDocuments()

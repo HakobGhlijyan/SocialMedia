@@ -37,7 +37,7 @@ final class LoginViewModel: ObservableObject {
     
     func fetchUser() async throws {
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        let user = try await Firestore.firestore().collection("SocialMedia_Users").document(userID).getDocument(as: User.self)
+        let user = try await FirestoreConstants.userRef.document(userID).getDocument(as: User.self)
         
         await MainActor.run {
             appStorage.userUID = userID

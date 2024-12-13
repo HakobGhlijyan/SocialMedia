@@ -15,5 +15,22 @@ import FirebaseStorageCombineSwift
 import FirebaseDatabase
 
 struct FirestoreConstants {
-//    static let userCollection = Firestore.firestore().collection("users")
+    static let postImagesRef = Storage
+        .storage()
+        .reference()
+        .child("SocialMedia_Post_Images")
+    
+    static let profileImagesRef = Storage
+        .storage()
+        .reference()
+        .child("SocialMedia_Profile_Images")
+    
+    static let postRef = Firestore
+        .firestore()
+        .collection("SocialMedia_Posts")
+    
+    static let userRef = Firestore
+        .firestore()
+        .collection("SocialMedia_Users")
+    
 }

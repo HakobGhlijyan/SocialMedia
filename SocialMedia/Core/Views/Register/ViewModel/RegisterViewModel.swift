@@ -27,7 +27,6 @@ final class RegisterViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var isLoading: Bool = false
     
-    
     func isEmpty() -> Bool {
         userName == "" || userBio == "" || emailID == "" || password == "" || userProfilePicData == nil
     }
@@ -42,7 +41,7 @@ final class RegisterViewModel: ObservableObject {
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
                 guard let imageData = userProfilePicData else { return }
                 
-                let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
+                let storageRef = FirestoreConstants.profileImagesRef.child(userUID)
                 let _ = try await storageRef.putDataAsync(imageData)
                 
                 let downloadURL = try await storageRef.downloadURL()
@@ -56,9 +55,7 @@ final class RegisterViewModel: ObservableObject {
                     userProfileURL: downloadURL
                 )
                 
-                let _ = try Firestore
-                    .firestore()
-                    .collection("SocialMedia_Users")
+                let _ = try FirestoreConstants.userRef
                     .document(userUID)
                     .setData(from: user) { error in
                         if error == nil {

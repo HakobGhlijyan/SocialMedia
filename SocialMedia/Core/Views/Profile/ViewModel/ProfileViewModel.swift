@@ -35,9 +35,9 @@ final class ProfileViewModel: ObservableObject {
             isLoading = true
             do {
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
-                let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
+                let storageRef = FirestoreConstants.profileImagesRef.child(userUID)
                 try await storageRef.delete()
-                try await Firestore.firestore().collection("SocialMedia_Users").document(userUID).delete()
+                try await FirestoreConstants.userRef.document(userUID).delete()
                 try await Auth.auth().currentUser?.delete()
                 appStorage.logStatus = false
             } catch {
@@ -56,7 +56,7 @@ final class ProfileViewModel: ObservableObject {
     
     func fetchUserProfile() async {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
-        guard let user = try? await Firestore.firestore().collection("SocialMedia_Users").document(userUID).getDocument(as: User.self) else { return }
+        guard let user = try? await FirestoreConstants.userRef.document(userUID).getDocument(as: User.self) else { return }
         await MainActor.run {
             myProfile = user
         }
