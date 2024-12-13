@@ -34,7 +34,6 @@ struct SearchUserView: View {
         .navigationTitle("Search User")
         .searchable(text: $searchText)
         .onSubmit(of: .search) {
-            //Fetch User from firebase
             Task { await searchUsers() }
         }
         .onChange(of: searchText) { oldValue, newValue in
@@ -54,7 +53,6 @@ struct SearchUserView: View {
             let users = try documents.documents.compactMap { document -> User? in
                 try document.data(as: User.self)
             }
-            // updateUI
             await MainActor.run {
                 fetchedUsers = users
             }

@@ -24,5 +24,5 @@ struct MainView: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }

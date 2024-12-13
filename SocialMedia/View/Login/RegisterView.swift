@@ -20,19 +20,14 @@ struct RegisterView: View {
     @State private var userBio: String = ""
     @State private var userBioLink: String = ""
     @State private var userProfilePicData: Data?
-    
     @State private var showImagePicker: Bool = false
     @State private var photoItem: PhotosPickerItem?
-    
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
-    
-    // MARK: UserDefaults
     @AppStorage("log_status") var logStatus: Bool = false
     @AppStorage("user_profile_url") var profileURL: URL?
     @AppStorage("user_name") var userNameStored: String = ""
     @AppStorage("user_UID") var userUID: String = ""
-    
     @Environment(\.dismiss) private var dismiss
     @State private var isLoading: Bool = false
     
@@ -80,15 +75,11 @@ struct RegisterView: View {
                         await MainActor.run {
                             userProfilePicData = imageData
                         }
-                    } catch {
-                        //code
-                    }
+                    } catch { }
                 }
             }
         }
-        .alert(errorMessage, isPresented: $showError) {
-            //code
-        }
+        .alert(errorMessage, isPresented: $showError) {}
     }
     
     @ViewBuilder func HelperView() -> some View {
@@ -162,21 +153,16 @@ struct RegisterView: View {
         closeKeyBoard()
         Task {
             do {
-                // Step 1: Creating Firebase Account
                 try await Auth.auth().createUser(withEmail: emailID, password: password)
                 
-                //Step 2: Uploading Profile Photo Into Firebase Storage
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
                 guard let imageData = userProfilePicData else { return }
                 
-                //Step 2.1: Storage for image
                 let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
                 let _ = try await storageRef.putDataAsync(imageData)
                 
-                //Step 3: downloading Photo URL
                 let downloadURL = try await storageRef.downloadURL()
                 
-                //Step 4: Creating a User Firebase Objects - Add Image
                 let user = User(
                     username: userName,
                     userBio: userBio,
@@ -186,7 +172,6 @@ struct RegisterView: View {
                     userProfileURL: downloadURL
                 )
                 
-                //Step 5: Saving User Doc into Firestore Database
                 let _ = try Firestore
                     .firestore()
                     .collection("SocialMedia_Users")
@@ -200,7 +185,6 @@ struct RegisterView: View {
                             logStatus = true
                         }
                     }
-                
             } catch {
                 await setError(error)
             }
@@ -217,5 +201,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }

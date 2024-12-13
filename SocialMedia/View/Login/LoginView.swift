@@ -89,9 +89,7 @@ struct LoginView: View {
         .fullScreenCover(isPresented: $createAccount) {
             RegisterView()
         }
-        .alert(errorMessage, isPresented: $showError) {
-            //
-        }
+        .alert(errorMessage, isPresented: $showError) {}
     }
     
     func loginUser() {
@@ -108,7 +106,6 @@ struct LoginView: View {
         }
     }
     
-    //MARK: If User if Found then Fetching User Data From Firestore
     func fetchUser() async throws {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let user = try await Firestore.firestore().collection("SocialMedia_Users").document(userID).getDocument(as: User.self)

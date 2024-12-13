@@ -15,7 +15,6 @@ struct ReusableProfileContent: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack {
-                //1
                 HStack(spacing: 12) {
                     WebImage(url: user.userProfileURL) { image in
                         image
@@ -27,6 +26,17 @@ struct ReusableProfileContent: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
+                    
+//                    AsyncImage(url: URL(string: url)) { image in
+//                        image
+//                            .resizable()
+//                    } placeholder: {
+//                        Image("NullProfile")
+//                            .resizable()
+//                    }
+//                    .scaledToFill()
+//                    .frame(width: 100, height: 100)
+//                    .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: 6) {
                         Text(user.username)
@@ -46,41 +56,6 @@ struct ReusableProfileContent: View {
                     }
                 }
                 .hAlign(.leading)
-                
-                //2
-                /*
-                 HStack(spacing: 12) {
-                     AsyncImage(url: URL(string: url)) { image in
-                //                        Image("NullProfile")
-                //                            .resizable()
-                         image
-                             .resizable()
-                     } placeholder: {
-                         
-                     }
-                     .scaledToFill()
-                     .frame(width: 100, height: 100)
-                     .clipShape(Circle())
-                     
-                     VStack(alignment: .leading, spacing: 6) {
-                         Text(user.username)
-                             .font(.title3)
-                             .fontWeight(.semibold)
-                         Text(user.userBio)
-                             .font(.caption)
-                             .foregroundColor(.secondary)
-                             .lineLimit(3)
-                         
-                         if let bioLink = URL(string: user.userBioLink) {
-                             Link(user.userBioLink, destination: bioLink)
-                                 .font(.callout)
-                                 .tint(.blue)
-                                 .lineLimit(1)
-                         }
-                     }
-                 }
-                 .hAlign(.leading)
-                 */
             
                 Text("Post's")
                     .font(.title2)

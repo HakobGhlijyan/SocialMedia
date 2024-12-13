@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct RootView: View {
     @AppStorage("log_status") var logStatus: Bool = false
     var body: some View {
         if logStatus {
@@ -19,5 +19,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }

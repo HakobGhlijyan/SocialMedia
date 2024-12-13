@@ -15,21 +15,16 @@ import FirebaseStorage
 import FirebaseDatabase
 
 struct CreateNewPost: View {
-    // - CallBack
     var onPost: (Post) -> ()
-    // - Post Properties
     @State private var postText: String = ""
     @State private var postImageData: Data?
-    // - Stored User Data From UserDefaults (AppStorage)
     @AppStorage("user_profile_url") private var profileURL: URL?
     @AppStorage("user_name") private var userName: String = ""
     @AppStorage("user_UID") private var userUID: String = ""
-    // - View Properties
     @Environment(\.dismiss) private var dismiss
     @State private var isLoading: Bool = false
     @State private var errorMessage: String = ""
     @State private var showError: Bool = false
-    // - Photo Picker and hide keyboard
     @State private var showImagePicker: Bool = false
     @State private var photoItem: PhotosPickerItem?
     @FocusState private var showKeyboard: Bool
@@ -79,7 +74,6 @@ struct CreateNewPost: View {
                                 .scaledToFill()
                                 .frame(width: size.width, height: size.height)
                                 .clipShape(.rect(cornerRadius: 10, style: .continuous))
-                            //Delete selected image
                                 .overlay(alignment: .topTrailing) {
                                     Button {
                                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -92,7 +86,6 @@ struct CreateNewPost: View {
                                     }
                                     .padding(10)
                                 }
-                            
                         }
                         .clipped()
                         .frame(height: 220)
@@ -120,7 +113,6 @@ struct CreateNewPost: View {
             
         }
         .vAlign(.top)
-        //For PhotoPicker
         .photosPicker(isPresented: $showImagePicker, selection: $photoItem)
         .onChange(of: photoItem) { oldValue, newValue in
             if let newValue {
@@ -134,22 +126,19 @@ struct CreateNewPost: View {
                 }
             }
         }
-        .alert(errorMessage, isPresented: $showError) {
-            //
-        }
+        .alert(errorMessage, isPresented: $showError) {}
         .overlay {
             LoadingView(show: $isLoading)
         }
     }
-    // MARK: Post Content To Firebase
+
     func createPost(){
         isLoading = true
         showKeyboard = false
         Task {
             do {
                 guard let profileURL = profileURL else { return }
-                // Step: 1 - Uploading Image If any
-                // Used to delete the Post(Later shown in the Video)
+
                 let imageReferenceID = "\(userUID)\(Date())"
                 let storageRef = Storage.storage().reference().child("SocialMedia_Post_Images").child(imageReferenceID)
                 if let postImageData {
@@ -157,8 +146,6 @@ struct CreateNewPost: View {
                     let _ = try await storageRef.putDataAsync(postImageData)
                     let downloadURL = try await storageRef.downloadURL()
                     
-                    // Step 3: Create Post Object With Image Id And URL
-                    // Создайте Объект Публикации С Идентификатором Изображения И URL-Адресом
                     let post = Post(
                         text: postText,
                         imageURL: downloadURL,
@@ -171,8 +158,6 @@ struct CreateNewPost: View {
                     print("Post and Image Uploaded")
                 } else {
                     print("Post start")
-                    // Step 2: - Directly Post Text Data to Firebase (Since there is no Images Present)
-                    // Непосредственно отправляйте текстовые данные в Firebase (поскольку там нет изображений)
                     let post = Post(
                         text: postText,
                         userName: userName,
@@ -191,13 +176,9 @@ struct CreateNewPost: View {
     }
 
     func createDocumentAtFirebase(_ post: Post) async throws {
-        // Writing Document to Firebase Firestore
-        // Запись документа в Firebase Firestore
         let doc = Firestore.firestore().collection("SocialMedia_Posts").document()
         let _ = try doc.setData(from: post, completion: { error in
             if error == nil {
-                // Post Successfully Stored at Firebase
-                // Сообщение успешно сохранено в Firebase
                 isLoading = false
                 var updatedPost = post
                 updatedPost.id = doc.documentID

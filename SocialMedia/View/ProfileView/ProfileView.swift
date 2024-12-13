@@ -37,9 +37,7 @@ struct ProfileView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        //1
                         Button("Log Out", action: logOutUser)
-                        //2
                         Button("Delete Acount", role: .destructive, action: deleteAccount)
                     } label: {
                         Image(systemName: "ellipsis")
@@ -52,11 +50,8 @@ struct ProfileView: View {
             .overlay {
                 LoadingView(show: $isLoading)
             }
-            .alert(errorMessage, isPresented: $showError) {
-                //
-            }
+            .alert(errorMessage, isPresented: $showError) {}
             .task {
-                //fetching only first time
                 if myProfile != nil { return }
                 await fetchUserProfile()
             }
@@ -77,12 +72,9 @@ struct ProfileView: View {
             isLoading = true
             do {
                 guard let userUID = Auth.auth().currentUser?.uid else { return }
-                //1: Delete profile Image , but no work
                 let storageRef = Storage.storage().reference().child("SocialMedia_Profile_Images").child(userUID)
                 try await storageRef.delete()
-                //2: Delete Firebase user documents
                 try await Firestore.firestore().collection("SocialMedia_Users").document(userUID).delete()
-                //Final - delete auth and setting for log status to false
                 try await Auth.auth().currentUser?.delete()
                 logStatus = false
             } catch {
